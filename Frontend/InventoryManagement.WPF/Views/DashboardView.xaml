@@ -1,0 +1,249 @@
+<UserControl x:Class="InventoryManagement.WPF.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+
+        <Border Grid.Column="0"
+                Background="#1E293B">
+
+            <StackPanel>
+
+                <TextBlock Text="IMS"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Margin="20"/>
+
+                <Button Content="Dashboard"
+                        Height="45"
+                        Margin="10"/>
+
+                <Button Content="Products"
+                        Height="45"
+                        Margin="10"
+                        Click="Products_Click"/>
+
+                <Button Content="Customers"
+                        Height="45"
+                        Margin="10"/>
+
+                <Button Content="Invoices"
+                        Height="45"
+                        Margin="10"/>
+
+                <Button Content="Reports"
+                        Height="45"
+                        Margin="10"/>
+
+                <Button Content="Logout"
+                        Height="45"
+                        Margin="10"/>
+
+            </StackPanel>
+
+        </Border>
+
+        <!-- Content Area -->
+
+        <Grid Grid.Column="1"
+            Background="#F8FAFC">
+
+            <ScrollViewer>
+
+                <StackPanel Margin="30">
+
+                    <Grid Margin="0,0,0,25">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+
+                            <TextBlock Text="Dashboard"
+                                    FontSize="32"
+                                    FontWeight="Bold"/>
+
+                            <TextBlock Text="Inventory Overview"
+                                    Foreground="Gray"
+                                    Margin="0,5,0,0"/>
+
+                        </StackPanel>
+
+                        <Border Grid.Column="1"
+                                Background="White"
+                                CornerRadius="8"
+                                Padding="15,8">
+
+                            <TextBlock Text="Admin User"
+                                    FontWeight="SemiBold"/>
+
+                        </Border>
+
+                    </Grid>
+
+                        <!-- KPI Cards -->
+
+                        <UniformGrid Columns="4">
+
+                    <!--Recent Activity -->
+                        <Border Background="White"
+                                CornerRadius="10"
+                                Margin="10"
+                                Padding="20">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Recent Activity"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Margin="0,0,0,15"/>
+
+                                <TextBlock Text="• No recent activity"
+                                        Margin="0,5"/>
+
+                                <TextBlock Text="• Products will appear here"
+                                        Margin="0,5"/>
+
+                                <TextBlock Text="• Invoice updates will appear here"
+                                        Margin="0,5"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+                        <!-- Quick Actions -->
+                        <Border Background="White"
+                                CornerRadius="10"
+                                Margin="10"
+                                Padding="20">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Quick Actions"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Margin="0,0,0,15"/>
+
+                                <WrapPanel>
+
+                                    <Button Content="Add Product"
+                                            Width="150"
+                                            Height="45"
+                                            Margin="5"/>
+
+                                    <Button Content="Add Customer"
+                                            Width="150"
+                                            Height="45"
+                                            Margin="5"/>
+
+                                    <Button Content="Create Invoice"
+                                            Width="150"
+                                            Height="45"
+                                            Margin="5"/>
+
+                                </WrapPanel>
+
+                            </StackPanel>
+
+                        </Border>
+                        <!-- Products -->
+
+                        <Border Background="White"
+                                CornerRadius="10"
+                                Margin="10"
+                                Padding="20">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Products"
+                                        FontSize="16"/>
+
+                                <TextBlock Text="0"
+                                        FontSize="36"
+                                        FontWeight="Bold"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+                        <!-- Customers -->
+
+                        <Border Background="White"
+                                CornerRadius="10"
+                                Margin="10"
+                                Padding="20">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Customers"
+                                        FontSize="16"/>
+
+                                <TextBlock Text="0"
+                                        FontSize="36"
+                                        FontWeight="Bold"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+                        <!-- Invoices -->
+
+                        <Border Background="White"
+                                CornerRadius="10"
+                                Margin="10"
+                                Padding="20">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Invoices"
+                                        FontSize="16"/>
+
+                                <TextBlock Text="0"
+                                        FontSize="36"
+                                        FontWeight="Bold"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+                        <!-- Revenue -->
+
+                        <Border Background="White"
+                                CornerRadius="10"
+                                Margin="10"
+                                Padding="20">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Revenue"
+                                        FontSize="16"/>
+
+                                <TextBlock Text="₹0"
+                                        FontSize="36"
+                                        FontWeight="Bold"/>
+
+                            </StackPanel>
+
+                        </Border>
+
+                    </UniformGrid>
+
+                </StackPanel>
+
+            </ScrollViewer>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

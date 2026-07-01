@@ -1,0 +1,6 @@
+@InvoiceItemService.API_HostAddress = http://localhost:5056
+
+GET {{InvoiceItemService.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
