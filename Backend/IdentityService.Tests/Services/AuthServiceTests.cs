@@ -5,6 +5,7 @@ using IdentityService.API.Interfaces;
 using IdentityService.API.Services;
 using Microsoft.AspNetCore.Identity;
 using IdentityService.API.Auth.DTOs;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -23,6 +24,9 @@ public class AuthServiceTests
 
     protected readonly Mock<ITokenService>
         _tokenServiceMock;
+
+    private readonly Mock<ILogger<AuthService>>
+         _loggerMock;
 
     protected readonly AuthService
         _authService;
@@ -53,12 +57,16 @@ public class AuthServiceTests
         _tokenServiceMock =
             new Mock<ITokenService>();
 
+        _loggerMock = 
+            new Mock<ILogger<AuthService>>();
+
         _authService =
             new AuthService(
                 _userManagerMock.Object,
                 _tokenServiceMock.Object,
                 _mapperMock.Object,
-                _userRepositoryMock.Object);
+                _userRepositoryMock.Object,
+                _loggerMock.Object);
     }
     [Fact]
     public async Task Register_UserAlreadyExists_ShouldThrowException()

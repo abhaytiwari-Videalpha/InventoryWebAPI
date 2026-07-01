@@ -1,22 +1,22 @@
 using System.Text;
-using Serilog;
 using Asp.Versioning;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using IdentityService.API.Auth.Models;
 using IdentityService.API.Auth.Services;
 using IdentityService.API.Data;
+using IdentityService.API.Interfaces;
+using IdentityService.API.Mappings;
+using IdentityService.API.Middleware;
+using IdentityService.API.Repositories;
+using IdentityService.API.Services;
+using IdentityService.API.Validators;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using IdentityService.API.Interfaces;
-using IdentityService.API.Repositories;
-using IdentityService.API.Services;
-using IdentityService.API.Middleware;
 using Microsoft.OpenApi.Models;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using IdentityService.API.Validators;
-using IdentityService.API.Mappings;
+using Serilog;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -30,6 +30,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
+var jwtKey = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new InvalidOperationException(
+        "Jwt:Key is missing in configuration.");
+}
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddValidatorsFromAssemblyContaining<
@@ -37,13 +49,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<
 
 builder.Services.AddAutoMapper(
     typeof(MappingProfile));
-// Controllers
-builder.Services.AddControllers();
-
-// API Explorer + Swagger
-builder.Services.AddEndpointsApiExplorer();
-
-
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -85,31 +90,45 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 
-// API Versioning
 builder.Services.AddApiVersioning(options =>
 {
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion =
+        new ApiVersion(1, 0);
+
+    options.AssumeDefaultVersionWhenUnspecified =
+        true;
+
     options.ReportApiVersions = true;
 });
 
-// MySQL Database
 builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        builder.Configuration.GetConnectionString(
+            "DefaultConnection"),
         ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("DefaultConnection")
-        )
-    )
-);
+            builder.Configuration.GetConnectionString(
+                "DefaultConnection"))
+    ));
 
-// ASP.NET Identity
 builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>()
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredLength = 8;
+
+        options.Lockout.DefaultLockoutTimeSpan =
+            TimeSpan.FromMinutes(15);
+
+        options.Lockout.MaxFailedAccessAttempts = 5;
+
+        options.Lockout.AllowedForNewUsers = true;
+    })
     .AddEntityFrameworkStores<IdentityDbContext>()
     .AddDefaultTokenProviders();
 
-// JWT Authentication
 builder.Services
     .AddAuthentication(options =>
     {
@@ -140,18 +159,16 @@ builder.Services
 
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(
-                            builder.Configuration["Jwt:Key"]!
-                        )
-                    )
+                        Encoding.UTF8.GetBytes(jwtKey)
+                    ),
+
+                ClockSkew = TimeSpan.Zero
             };
     });
 
-// Token Service
 builder.Services.AddScoped<
     ITokenService,
     TokenService>();
-builder.Services.AddHealthChecks();
 
 builder.Services.AddScoped<
     IUserRepository,
@@ -161,20 +178,29 @@ builder.Services.AddScoped<
     IAuthService,
     AuthService>();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
-// Swagger
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseSerilogRequestLogging();
-// Authentication
+
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
-// Controllers
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -197,9 +223,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-// Health Check Endpoint
-app.MapHealthChecks("/health");
-
 
 app.Run();
 

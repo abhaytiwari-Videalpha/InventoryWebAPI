@@ -1,11 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using IdentityService.API.Auth.Models;
+using IdentityService.API.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using IdentityService.API.Interfaces;
 
 namespace IdentityService.API.Auth.Services;
 
@@ -22,6 +22,14 @@ public class TokenService : ITokenService
         ApplicationUser user,
         UserManager<ApplicationUser> userManager)
     {
+        var jwtKey = _configuration["Jwt:Key"];
+
+        if (string.IsNullOrWhiteSpace(jwtKey))
+        {
+            throw new InvalidOperationException(
+                "JWT Key is not configured.");
+        }
+
         var roles =
             await userManager.GetRolesAsync(user);
 
@@ -29,13 +37,15 @@ public class TokenService : ITokenService
         {
             new Claim(
                 ClaimTypes.Email,
-                user.Email!
-            ),
+                user.Email ?? string.Empty),
 
             new Claim(
                 ClaimTypes.NameIdentifier,
-                user.Id
-            )
+                user.Id),
+
+            new Claim(
+                JwtRegisteredClaimNames.Jti,
+                Guid.NewGuid().ToString())
         };
 
         foreach (var role in roles)
@@ -43,29 +53,22 @@ public class TokenService : ITokenService
             claims.Add(
                 new Claim(
                     ClaimTypes.Role,
-                    role
-                )
-            );
+                    role));
         }
 
         var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(
-                _configuration["Jwt:Key"]!
-            )
-        );
+            Encoding.UTF8.GetBytes(jwtKey));
 
-        var creds = new SigningCredentials(
+        var credentials = new SigningCredentials(
             key,
-            SecurityAlgorithms.HmacSha256
-        );
+            SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddDays(1),
-            signingCredentials: creds
-        );
+            expires: DateTime.UtcNow.AddDays(1),
+            signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler()
             .WriteToken(token);
@@ -73,12 +76,12 @@ public class TokenService : ITokenService
 
     public string GenerateRefreshToken()
     {
-        var randomNumber = new byte[64];
+        var randomBytes = new byte[64];
 
         using var rng = RandomNumberGenerator.Create();
 
-        rng.GetBytes(randomNumber);
+        rng.GetBytes(randomBytes);
 
-        return Convert.ToBase64String(randomNumber);
+        return Convert.ToBase64String(randomBytes);
     }
 }

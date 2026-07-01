@@ -4,6 +4,7 @@ using IdentityService.API.Interfaces;
 using IdentityService.API.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace IdentityService.API.Controllers.V1;
 
@@ -50,7 +51,6 @@ public class AuthController : ControllerBase
                 response));
     }
 
-
     [AllowAnonymous]
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken(
@@ -67,9 +67,41 @@ public class AuthController : ControllerBase
                 response));
     }
 
+    [Authorize]
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var email =
+            User.FindFirstValue(
+                ClaimTypes.Email);
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return Unauthorized(
+                new ApiResponse<string>(
+                    false,
+                    "User information not found",
+                    null));
+        }
+
+        var result =
+            await _authService.LogoutAsync(email);
+
+        return Ok(
+            new ApiResponse<string>(
+                true,
+                "Logout Successful",
+                result));
+    }
+
+    [AllowAnonymous]
     [HttpGet("ping")]
     public IActionResult Ping()
     {
-        return Ok("Identity Service Working");
+        return Ok(
+            new ApiResponse<string>(
+                true,
+                "Identity Service Working",
+                "PONG"));
     }
 }

@@ -1,3 +1,4 @@
+using IdentityService.API.Exceptions;
 using System.Net;
 using System.Text.Json;
 
@@ -22,11 +23,18 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            context.Response.ContentType =
-                "application/json";
+            context.Response.ContentType = "application/json";
 
-            context.Response.StatusCode =
-                (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = ex switch
+            {
+                NotFoundException => (int)HttpStatusCode.NotFound,
+
+                UnauthorizedException => (int)HttpStatusCode.Unauthorized,
+
+                BadRequestException => (int)HttpStatusCode.BadRequest,
+
+                _ => (int)HttpStatusCode.InternalServerError
+            };
 
             var response = new
             {

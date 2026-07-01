@@ -12,9 +12,9 @@ TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\App.xaml
 7-502555219
 22-1067943819
-271717370156
-2041204088291
+34231645824
+408-1886790714
 MainWindow.xaml;Resources\Colors.xaml;Resources\Styles.xaml;Views\AddProductWindow.xaml;Views\DashboardView.xaml;Views\LoginView.xaml;Views\ProductsView.xaml;
 
-True
+False
 

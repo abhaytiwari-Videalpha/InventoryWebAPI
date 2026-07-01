@@ -10,4 +10,13 @@ public interface IAuthService
 
     Task<AuthResponseDto> RefreshTokenAsync(
         RefreshTokenRequestDto dto);
+
+    Task<string> LogoutAsync(string email);
+
+    Task<ProfileResponseDto> GetProfileAsync(
+    string email);
+
+    Task<string> UpdateProfileAsync(
+        string email,
+        UpdateProfileDto dto);
 }
