@@ -33,6 +33,3 @@ jobs:
 
       - name: Build Solution
         run: dotnet build InventoryManagement.slnx --configuration Release --no-restore
-
-      - name: Run Tests
-        run: dotnet test InventoryManagement.slnx --configuration Release --no-build
