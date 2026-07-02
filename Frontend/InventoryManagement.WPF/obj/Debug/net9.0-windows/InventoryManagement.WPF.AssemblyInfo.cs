@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InventoryManagement.WPF")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0b887d28641eed9e1c80cac34660bf471a8ec1e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9093cbfc1bbea3aa05cd697c51c8e315c08c183")]
 [assembly: System.Reflection.AssemblyProductAttribute("InventoryManagement.WPF")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InventoryManagement.WPF")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
