@@ -15,5 +15,7 @@ namespace InventoryManagement.WPF.Configuration
             public const string RefreshToken = "api/v1/auth/refresh-token";
             public const string Logout = "api/v1/auth/logout";
         }
+
+        public const string Products = "api/v1/Products";
     }
 }

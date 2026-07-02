@@ -39,7 +39,7 @@ C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\ob
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\CustomersView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\DashboardView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\InvoicesView.baml
-C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductsView.baml
+C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductDialog.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProfileView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ReportsView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\App.baml
@@ -48,6 +48,7 @@ C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\ob
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\InvoicesView.g.cs
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\LoginView.g.cs
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\MainWindow.g.cs
+C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductDialog.g.cs
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductsView.g.cs
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProfileView.g.cs
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\RegisterView.g.cs
@@ -59,6 +60,7 @@ C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\ob
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Resources\Templates\ViewTemplates.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\LoginView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\MainWindow.baml
+C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductsView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\RegisterView.baml
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\InventoryManagement.WPF.g.resources
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\InventoryManagement.WPF.GeneratedMSBuildEditorConfig.editorconfig
@@ -72,3 +74,5 @@ C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\ob
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\InventoryManagement.WPF.pdb
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\InventoryManagement.WPF.genruntimeconfig.cache
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\ref\InventoryManagement.WPF.dll
+C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductFilterDialog.baml
+C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\obj\Debug\net9.0-windows\Views\ProductFilterDialog.g.cs

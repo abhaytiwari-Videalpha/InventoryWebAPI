@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- ===================== EXISTING (UNCHANGED) ===================== -->
     <Color x:Key="PrimaryColor">#FF1E3A5F</Color>
     <Color x:Key="PrimaryLightColor">#FF2E5A8F</Color>
     <Color x:Key="AccentColor">#FF00A8E8</Color>
@@ -24,5 +25,22 @@
     <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
     <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
     <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+
+    <!-- ===================== NEW — Product module redesign only ===================== -->
+
+    <!-- Soft tint backgrounds for KPI icon circles -->
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#1A00A8E8" />
+    <SolidColorBrush x:Key="SuccessSoftBrush" Color="#1A2E9E5B" />
+    <SolidColorBrush x:Key="WarningSoftBrush" Color="#1AE0A32E" />
+    <SolidColorBrush x:Key="ErrorSoftBrush" Color="#1AD64545" />
+
+    <!-- Modern table tokens -->
+    <SolidColorBrush x:Key="TableHeaderBackgroundBrush" Color="#FFF8F9FB" />
+    <SolidColorBrush x:Key="TableRowHoverBrush" Color="#FFF2F6FA" />
+    <SolidColorBrush x:Key="TableRowAlternateBrush" Color="#FFFBFBFC" />
+
+    <!-- Modern scrollbar tokens -->
+    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FFC7CCD1" />
+    <SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#FFA9AFB6" />
 
 </ResourceDictionary>
