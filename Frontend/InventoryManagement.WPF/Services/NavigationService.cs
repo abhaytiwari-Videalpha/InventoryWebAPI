@@ -1,16 +1,38 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using InventoryManagement.WPF.Interfaces;
+using InventoryManagement.WPF.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace InventoryManagement.WPF.Services;
-
-public partial class NavigationService
-    : ObservableObject
+namespace InventoryManagement.WPF.Services
 {
-    private static readonly NavigationService _instance =
-        new();
+    /// <summary>
+    /// Resolves module ViewModels from the DI container (or accepts pre-built instances)
+    /// and publishes the active one for the shell to display via DataTemplates.
+    /// </summary>
+    public class NavigationService : INavigationService
+    {
+        private readonly IServiceProvider _serviceProvider;
+        private ViewModelBase? _currentViewModel;
 
-    public static NavigationService Instance =>
-        _instance;
+        public NavigationService(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
 
-    [ObservableProperty]
-    private object? currentView;
+        public event EventHandler<ViewModelBase?>? CurrentViewModelChanged;
+
+        public ViewModelBase? CurrentViewModel => _currentViewModel;
+
+        public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
+        {
+            var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+            Navigate(viewModel);
+        }
+
+        public void Navigate(ViewModelBase viewModel)
+        {
+            _currentViewModel = viewModel;
+            CurrentViewModelChanged?.Invoke(this, _currentViewModel);
+        }
+    }
 }

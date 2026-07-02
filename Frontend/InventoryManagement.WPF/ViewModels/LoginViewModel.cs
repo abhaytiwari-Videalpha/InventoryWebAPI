@@ -1,66 +1,75 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using InventoryManagement.WPF.Helpers;
+using InventoryManagement.WPF.Interfaces;
 using InventoryManagement.WPF.Models;
-using InventoryManagement.WPF.Services;
-using InventoryManagement.WPF.Views;
-using System.Windows;
 
-namespace InventoryManagement.WPF.ViewModels;
-
-public partial class LoginViewModel : ViewModelBase
+namespace InventoryManagement.WPF.ViewModels
 {
-    private readonly AuthService _authService;
-
-    public LoginViewModel()
+    public partial class LoginViewModel : ViewModelBase
     {
-        _authService = new AuthService();
-    }
+        private readonly IAuthService _authService;
+        private readonly INavigationService _navigationService;
 
-    [ObservableProperty]
-    private string email = string.Empty;
+        [ObservableProperty]
+        private string email = string.Empty;
 
-    [ObservableProperty]
-    private string password = string.Empty;
+        [ObservableProperty]
+        private string password = string.Empty;
 
-    [RelayCommand]
-    private async Task Login()
-    {
-        try
+        public LoginViewModel(IAuthService authService, INavigationService navigationService)
         {
-            var request = new LoginRequest
+            _authService = authService;
+            _navigationService = navigationService;
+            Title = "Sign In";
+        }
+
+        [RelayCommand]
+        private async System.Threading.Tasks.Task LoginAsync()
+        {
+            if (IsBusy)
             {
-                Email = Email,
-                Password = Password
-            };
-
-            var result =
-                await _authService.LoginAsync(
-                    request);
-
-            if (result == null)
-            {
-                MessageBox.Show(
-                    "Invalid credentials");
-
                 return;
             }
 
-            TokenStorage.Token =
-                result.Token;
+            ClearError();
 
-            MessageBox.Show(
-             $"TOKEN AFTER LOGIN:\n\n{TokenStorage.Token}");
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            {
+                SetError("Please enter both email and password.");
+                return;
+            }
 
-            TokenStorage.RefreshToken =
-                result.RefreshToken;
+            IsBusy = true;
 
-            NavigationService.Instance.CurrentView =
-                new DashboardView();
+            try
+            {
+                var result = await _authService.LoginAsync(new LoginRequest
+                {
+                    Email = Email,
+                    Password = Password
+                });
+
+                if (result.Success)
+                {
+                    _navigationService.NavigateTo<DashboardViewModel>();
+                }
+                else
+                {
+                    SetError(result.Message ?? "Login failed. Please check your credentials.");
+                }
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
-        catch (Exception ex)
+
+        [RelayCommand]
+        private void NavigateToRegister()
         {
-            MessageBox.Show(ex.Message);
+            _navigationService.NavigateTo<RegisterViewModel>();
         }
+
+        public void SetPassword(string value) => Password = value;
     }
 }

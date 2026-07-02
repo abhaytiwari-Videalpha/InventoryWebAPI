@@ -1,0 +1,305 @@
+<Window x:Class="InventoryManagement.WPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:converters="clr-namespace:InventoryManagement.WPF.Converters"
+mc:Ignorable="d"
+        Title="{Binding Title}"
+        Height="800" Width="1400"
+        MinHeight="600" MinWidth="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:MenuSelectionConverter x:Key="MenuSelectionConverter" />
+
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="46" />
+            <Setter Property="Margin" Value="12,3" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="16,0">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.85" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+
+        <!-- ===================== AUTH LAYOUT (Login / Register) ===================== -->
+        <Grid Background="{StaticResource BackgroundBrush}"
+              Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}">
+            <ContentControl Content="{Binding CurrentViewModel}" />
+        </Grid>
+
+        <!-- ===================== DASHBOARD SHELL LAYOUT ===================== -->
+        <Grid Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="64" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+<!-- TOP HEADER -->
+            <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+                <Grid Margin="20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding Title}"
+                               FontSize="18" FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryBrush}"
+                               VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding CurrentDate}"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,24,0" />
+
+                    <Border Grid.Column="2"
+                            Width="36" Height="36"
+                            CornerRadius="18"
+                            Background="{StaticResource BackgroundBrush}"
+                            Margin="0,0,12,0">
+                        <TextBlock Text="&#xE7E7;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+
+                    <TextBlock Grid.Column="3"
+                               Text="{Binding UserName}"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+<!-- SIDEBAR + CONTENT -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- SIDEBAR -->
+                <Border Grid.Column="0" Background="{StaticResource PrimaryBrush}">
+                    <StackPanel Margin="0,20,0,0">
+
+                        <Button Command="{Binding NavigateDashboardCommand}" Tag="Dashboard" Style="{StaticResource MenuButtonStyle}">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Background">
+                                    <Binding Path="SelectedMenuItem" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                </MultiBinding>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="Dashboard" Margin="8,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateProductsCommand}" Tag="Products" Style="{StaticResource MenuButtonStyle}">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Background">
+                                    <Binding Path="SelectedMenuItem" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                </MultiBinding>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE719;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="Products" Margin="8,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateCustomersCommand}" Tag="Customers" Style="{StaticResource MenuButtonStyle}">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Background">
+                                    <Binding Path="SelectedMenuItem" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                </MultiBinding>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="Customers" Margin="8,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateInvoicesCommand}" Tag="Invoices" Style="{StaticResource MenuButtonStyle}">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Background">
+                                    <Binding Path="SelectedMenuItem" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                </MultiBinding>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE9F9;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="Invoices" Margin="8,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateReportsCommand}" Tag="Reports" Style="{StaticResource MenuButtonStyle}">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Background">
+                                    <Binding Path="SelectedMenuItem" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                </MultiBinding>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="Reports" Margin="8,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateProfileCommand}" Tag="Profile" Style="{StaticResource MenuButtonStyle}">
+                            <Button.Background>
+                                <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Background">
+                                    <Binding Path="SelectedMenuItem" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                </MultiBinding>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock Text="Profile" Margin="8,0,0,0">
+                                    <TextBlock.Foreground>
+                                        <MultiBinding Converter="{StaticResource MenuSelectionConverter}" ConverterParameter="Foreground">
+                                            <Binding Path="SelectedMenuItem" />
+                                            <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=Button}" />
+                                        </MultiBinding>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
+
+                        <Border Height="1" Background="#33FFFFFF" Margin="16,12" />
+
+                        <Button Command="{Binding LogoutCommand}" Style="{StaticResource MenuButtonStyle}"
+                                Background="Transparent">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="16" Width="24" Foreground="White" />
+                                <TextBlock Text="Logout" Margin="8,0,0,0" Foreground="White" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- CONTENT AREA -->
+                <Border Grid.Column="1" Background="{StaticResource BackgroundBrush}">
+                    <Border Margin="24"
+                            Background="{StaticResource SurfaceBrush}"
+                            CornerRadius="12"
+                            Padding="24">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="16" ShadowDepth="2" Opacity="0.08" Color="Black" />
+                        </Border.Effect>
+                        <ContentControl Content="{Binding CurrentViewModel}" />
+                    </Border>
+                </Border>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

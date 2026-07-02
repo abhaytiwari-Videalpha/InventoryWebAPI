@@ -1,15 +1,21 @@
 using System.Windows.Controls;
 using InventoryManagement.WPF.ViewModels;
 
-namespace InventoryManagement.WPF.Views;
-
-public partial class LoginView : UserControl
+namespace InventoryManagement.WPF.Views
 {
-    public LoginView()
+    public partial class LoginView : UserControl
     {
-        InitializeComponent();
+        public LoginView()
+        {
+            InitializeComponent();
+        }
 
-        DataContext =
-            new LoginViewModel();
+        private void PasswordBoxControl_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel viewModel)
+            {
+                viewModel.SetPassword(PasswordBoxControl.Password);
+            }
+        }
     }
 }

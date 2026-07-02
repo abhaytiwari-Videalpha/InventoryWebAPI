@@ -1,32 +1,16 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using InventoryManagement.WPF.Models;
-using InventoryManagement.WPF.Services;
-using System.Collections.ObjectModel;
 
-namespace InventoryManagement.WPF.ViewModels;
-
-public partial class ProductsViewModel : ViewModelBase
+namespace InventoryManagement.WPF.ViewModels
 {
-    private readonly ProductService _productService;
-
-    [ObservableProperty]
-    private ObservableCollection<Product> products = new();
-
-    public ProductsViewModel()
+    /// <summary>Placeholder — full CRUD + pagination wired in Module 4 (Product Management).</summary>
+    public partial class ProductsViewModel : ViewModelBase
     {
-        _productService =
-            new ProductService();
+        [ObservableProperty]
+        private string sampleContent = "Product list, search, filtering, and CRUD will be implemented in Module 4.";
 
-        _ = LoadProducts();
-    }
-
-    private async Task LoadProducts()
-    {
-        var result =
-            await _productService.GetProductsAsync();
-
-        Products =
-            new ObservableCollection<Product>(
-                result);
+        public ProductsViewModel()
+        {
+            Title = "Products";
+        }
     }
 }
