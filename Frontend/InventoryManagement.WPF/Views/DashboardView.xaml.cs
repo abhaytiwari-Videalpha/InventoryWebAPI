@@ -1,21 +1,12 @@
 using System.Windows.Controls;
-using System.Windows;
-using InventoryManagement.WPF.Services;
 
-
-namespace InventoryManagement.WPF.Views;
-
-public partial class DashboardView : UserControl
+namespace InventoryManagement.WPF.Views
 {
-    public DashboardView()
+    public partial class DashboardView : UserControl
     {
-        InitializeComponent();
-    }
-    private void Products_Click(
-        object sender,
-        RoutedEventArgs e)
-    {
-        NavigationService.Instance.CurrentView =
-            new ProductsView();
+        public DashboardView()
+        {
+            InitializeComponent();
+        }
     }
 }

@@ -1,28 +1,12 @@
 using System.Windows.Controls;
-using System.Windows;
-using InventoryManagement.WPF.ViewModels;
 
-namespace InventoryManagement.WPF.Views;
-
-
-public partial class ProductsView : UserControl
+namespace InventoryManagement.WPF.Views
 {
-
-    private void AddProduct_Click(
-    object sender,
-    RoutedEventArgs e)
+    public partial class ProductsView : UserControl
     {
-        var window =
-            new AddProductWindow();
-
-        window.ShowDialog();
+        public ProductsView()
+        {
+            InitializeComponent();
+        }
     }
-    public ProductsView()
-    {
-        InitializeComponent();
-
-            DataContext =
-            new ProductsViewModel();
-    }
-
 }
