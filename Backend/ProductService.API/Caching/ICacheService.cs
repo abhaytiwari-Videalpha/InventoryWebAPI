@@ -10,4 +10,9 @@ public interface ICacheService
         TimeSpan? expiration = null);
 
     Task RemoveData(string key);
+
+    // NEW
+    Task<int> GetCacheVersionAsync();
+
+    Task IncrementCacheVersionAsync();
 }

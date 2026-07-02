@@ -51,7 +51,7 @@ namespace InventoryManagement.WPF.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/InventoryManagement.WPF;component/views/customersview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/InventoryManagement.WPF;V1.0.0.0;component/views/customersview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\CustomersView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

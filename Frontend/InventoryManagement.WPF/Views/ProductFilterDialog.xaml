@@ -1,0 +1,80 @@
+<Window x:Class="InventoryManagement.WPF.Views.ProductFilterDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Filter Products"
+        Height="420"
+        Width="420"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Padding="24"
+        CornerRadius="12"
+        Background="White">
+
+        <StackPanel>
+
+            <TextBlock Text="Filter Products"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+
+            <TextBlock Text="Minimum Price"/>
+
+            <TextBox Text="{Binding MinPrice}"
+                     Margin="0,4,0,16"/>
+
+            <TextBlock Text="Maximum Price"/>
+
+            <TextBox Text="{Binding MaxPrice}"
+                     Margin="0,4,0,16"/>
+
+            <CheckBox Content="Show Low Stock Only"
+                      IsChecked="{Binding LowStockOnly}"
+                      Margin="0,0,0,16"/>
+
+            <TextBlock Text="Sort By"/>
+
+            <ComboBox SelectedValue="{Binding SortBy}"
+                      SelectedValuePath="Tag"
+                      Margin="0,4,0,16">
+
+                <ComboBoxItem Content="Name" Tag="name"/>
+                <ComboBoxItem Content="Price" Tag="price"/>
+                <ComboBoxItem Content="Quantity" Tag="quantity"/>
+
+            </ComboBox>
+
+            <TextBlock Text="Sort Order"/>
+
+            <ComboBox SelectedValue="{Binding SortOrder}"
+                      SelectedValuePath="Tag"
+                      Margin="0,4,0,24">
+
+                <ComboBoxItem Content="Ascending" Tag="asc"/>
+                <ComboBoxItem Content="Descending" Tag="desc"/>
+
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <Button Content="Reset"
+                        Width="100"
+                        Margin="0,0,10,0"
+                        Click="Reset_Click"/>
+
+                <Button Content="Apply"
+                        Width="100"
+                        IsDefault="True"
+                        Click="Apply_Click"/>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Border>
+
+</Window>

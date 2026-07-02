@@ -104,6 +104,12 @@ public class ProductRepository : IProductRepository
             p.Price <= paginationParameters.MaxPrice.Value);
     }
 
+    if(paginationParameters.LowStockOnly == true)
+        {
+            query = query.Where(p =>
+            p.Quantity <= 10);
+        }
+
     return await query.CountAsync();
 }
     public async Task<Product?> GetByIdAsync(int id)
@@ -120,7 +126,6 @@ public class ProductRepository : IProductRepository
 
     public async Task UpdateAsync(Product product)
     {
-        _context.Products.Update(product);
         await _context.SaveChangesAsync();
     }
 

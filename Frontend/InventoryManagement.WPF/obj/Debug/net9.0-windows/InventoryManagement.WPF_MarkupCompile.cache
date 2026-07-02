@@ -1,5 +1,5 @@
 ﻿InventoryManagement.WPF
-
+1.0.0.0
 
 winexe
 C#
@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\VideAlpha\InventoryManagementSystem\Frontend\InventoryManagement.WPF\App.xaml
-12-1808352843
+14-731544004
 
-45-755461685
-2291229765427
-Resources\Templates\ViewTemplates.xaml;Resources\Themes\Colors.xaml;Resources\Themes\Styles.xaml;Views\CustomersView.xaml;Views\DashboardView.xaml;Views\InvoicesView.xaml;Views\LoginView.xaml;Views\MainWindow.xaml;Views\ProductsView.xaml;Views\ProfileView.xaml;Views\RegisterView.xaml;Views\ReportsView.xaml;
+721259252592
+458-1835436442
+Resources\Templates\ViewTemplates.xaml;Resources\Themes\Colors.xaml;Resources\Themes\Styles.xaml;Views\CustomersView.xaml;Views\DashboardView.xaml;Views\InvoicesView.xaml;Views\LoginView.xaml;Views\MainWindow.xaml;Views\ProductDialog.xaml;Views\ProductFilterDialog.xaml;Views\ProductsView.xaml;Views\ProfileView.xaml;Views\RegisterView.xaml;Views\ReportsView.xaml;
 
 False
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using InventoryManagement.WPF.Configuration;
 using InventoryManagement.WPF.Interfaces;
 using InventoryManagement.WPF.Services;
@@ -19,6 +21,12 @@ namespace InventoryManagement.WPF
 
         public App()
         {
+            // ---- DIAGNOSTIC: catch every unhandled exception so the app tells us
+            // what killed it instead of silently closing. ----
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += App_AppDomainUnhandledException;
+            TaskScheduler.UnobservedTaskException += App_UnobservedTaskException;
+
             _host = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((_, config) =>
                 {
@@ -30,6 +38,37 @@ namespace InventoryManagement.WPF
                     ConfigureServices(context.Configuration, services);
                 })
                 .Build();
+        }
+
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(
+                $"UNHANDLED UI EXCEPTION:\n\n{e.Exception}",
+                "Application Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+
+            e.Handled = true; // prevents the app from closing so you can read the message
+        }
+
+        private void App_AppDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(
+                $"FATAL UNHANDLED EXCEPTION:\n\n{e.ExceptionObject}",
+                "Fatal Application Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+
+        private void App_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+        {
+            MessageBox.Show(
+                $"UNOBSERVED TASK EXCEPTION:\n\n{e.Exception}",
+                "Background Task Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+
+            e.SetObserved();
         }
 
         private static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
@@ -58,6 +97,9 @@ namespace InventoryManagement.WPF
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthService, AuthService>();
 
+            // Product Module
+            services.AddTransient<IProductService, ProductService>();
+
             // ---- Shell (single window, single instance) ----
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<MainWindow>();
@@ -66,7 +108,7 @@ namespace InventoryManagement.WPF
             services.AddTransient<LoginViewModel>();
             services.AddTransient<RegisterViewModel>();
 
-            // ---- Module placeholder ViewModels (transient for now) ----
+            // ---- Module ViewModels ----
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<ProductsViewModel>();
             services.AddTransient<CustomersViewModel>();
@@ -91,28 +133,28 @@ namespace InventoryManagement.WPF
         }
 
         protected override async void OnStartup(StartupEventArgs e)
-                {
-                    await _host.StartAsync();
+        {
+            await _host.StartAsync();
 
-                    var navigationService = _host.Services.GetRequiredService<INavigationService>();
-                    var authService = _host.Services.GetRequiredService<IAuthService>();
+            var navigationService = _host.Services.GetRequiredService<INavigationService>();
+            var authService = _host.Services.GetRequiredService<IAuthService>();
 
-                    var autoLoginResult = await authService.TryAutoLoginAsync();
+            var autoLoginResult = await authService.TryAutoLoginAsync();
 
-                    if (autoLoginResult.Success)
-                    {
-                        navigationService.NavigateTo<DashboardViewModel>();
-                    }
-                    else
-                    {
-                        navigationService.NavigateTo<LoginViewModel>();
-                    }
+            if (autoLoginResult.Success)
+            {
+                navigationService.NavigateTo<DashboardViewModel>();
+            }
+            else
+            {
+                navigationService.NavigateTo<LoginViewModel>();
+            }
 
-                    var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-                    mainWindow.Show();
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
 
-                    base.OnStartup(e);
-                }
+            base.OnStartup(e);
+        }
 
         protected override async void OnExit(ExitEventArgs e)
         {

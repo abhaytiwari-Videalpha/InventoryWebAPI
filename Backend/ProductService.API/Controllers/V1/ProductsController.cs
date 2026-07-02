@@ -55,15 +55,26 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<PagedResponse<List<ProductDto>>>> GetProducts( [FromQuery] PaginationParameters paginationParameters)
     {
 
-        string cacheKey =
-            $"products_" +
-            $"{paginationParameters.PageNumber}_" +
-            $"{paginationParameters.PageSize}_" +
-            $"{paginationParameters.Search}_" +
-            $"{paginationParameters.SortBy}_" +
-            $"{paginationParameters.SortOrder}_" +
-            $"{paginationParameters.MinPrice}_" +
-            $"{paginationParameters.MaxPrice}";
+    var version =
+        await _cacheService.GetCacheVersionAsync();
+
+    _logger.LogInformation(
+    $"Current cache version = {version}");
+
+
+
+    string cacheKey =
+        $"products_v{version}_" +
+        $"{paginationParameters.PageNumber}_" +
+        $"{paginationParameters.PageSize}_" +
+        $"{paginationParameters.Search}_" +
+        $"{paginationParameters.SortBy}_" +
+        $"{paginationParameters.SortOrder}_" +
+        $"{paginationParameters.MinPrice}_" +
+        $"{paginationParameters.MaxPrice}";
+
+        _logger.LogInformation(
+        $"Cache key = {cacheKey}");
 
         var totalRecords =
         await _service.GetTotalCount(paginationParameters);
@@ -222,10 +233,10 @@ public class ProductsController : ControllerBase
         var response =
             _mapper.Map<ProductDto>(createdProduct);
 
-        await _cacheService.RemoveData("products_all");
+        await _cacheService.IncrementCacheVersionAsync();
 
         _logger.LogInformation(
-            "Products cache invalidated after Create");
+            "Products cache Version Incremented after Create");
 
         return CreatedAtAction(
             nameof(GetProduct),
@@ -270,16 +281,17 @@ public class ProductsController : ControllerBase
             );
         }
 
-        var product =
-            _mapper.Map<Product>(dto);
+        existingProduct.Name = dto.Name;
+        existingProduct.Price = dto.Price;
+        existingProduct.Quantity = dto.Quantity;
 
-        await _service.UpdateProduct(product);
+        await _service.UpdateProduct(existingProduct);
 
-        await _cacheService.RemoveData("products_all");
+        await _cacheService.IncrementCacheVersionAsync();
         await _cacheService.RemoveData($"product_{id}");
 
         _logger.LogInformation(
-            $"Cache invalidated for Product {id}");
+            $"Cache version incremented after updated Product {id}");
 
             return Ok(
                 new ApiResponse<object>(
@@ -313,11 +325,11 @@ public class ProductsController : ControllerBase
 
         await _service.DeleteProduct(id);
 
-        await _cacheService.RemoveData("products_all");
+        await _cacheService.IncrementCacheVersionAsync();
         await _cacheService.RemoveData($"product_{id}");
 
         _logger.LogInformation(
-            $"Cache invalidated after deleting Product {id}");
+            $"Cache version incremented after deleting Product {id}");
 
             return Ok(
                 new ApiResponse<object>(
